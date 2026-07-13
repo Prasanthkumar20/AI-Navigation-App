@@ -1,0 +1,186 @@
+# Product Requirements Document (PRD)
+# AI Navigation
+
+**Version:** 1.0
+**Status:** Draft
+**Owner:** Product Team
+
+---
+
+## 1. Vision
+
+Traditional navigation apps give mechanical, robotic instructions — precise but impersonal ("In 300 meters, turn right onto Elm Street"). Humans don't navigate that way; they say things like *"Turn right just after the gas station"* or *"Stay on this road until you see the church, then take a left."*
+
+**AI Navigation's vision** is to make digital navigation feel like getting directions from a knowledgeable friend in the car with you — natural, contextual, landmark-aware, and reassuring — while still using the accuracy and coverage of Google Maps under the hood.
+
+> "Navigation that talks to you like a person, not a machine."
+
+Long-term, AI Navigation aims to become the natural-language layer of choice for human-centered wayfinding — usable standalone or eventually licensed as an SDK/API layer for other mapping products.
+
+---
+
+## 2. Target Users
+
+| Segment | Description | Needs |
+|---|---|---|
+| **Everyday commuters** | People driving/walking familiar or semi-familiar routes daily | Quick, low-cognitive-load guidance; reduce reliance on staring at screen |
+| **Tourists & travelers** | Visiting unfamiliar cities, often on foot or rideshare | Clear, landmark-based directions; confidence in unfamiliar areas |
+| **New drivers / anxious navigators** | Users who find rapid distance-based instructions stressful | Calm, reassuring, conversational tone; more lead-time on cues |
+| **Ride-share & delivery drivers** | Frequent, varied trips across a city | Fast, unambiguous guidance that reduces missed turns and wrong stops |
+| **Accessibility-focused users** | Visually impaired or low-vision users relying heavily on audio guidance | Rich, descriptive audio cues beyond simple distance countdowns |
+
+### Primary persona (MVP focus)
+**"Priya, 29, urban commuter"** — Drives a mix of familiar and new routes, currently uses Google Maps/Waze, gets mildly annoyed by robotic phrasing and wants something that feels more natural, especially in complex intersections.
+
+---
+
+## 3. Competitors
+
+| Competitor | Strength | Gap AI Navigation Targets |
+|---|---|---|
+| **Google Maps** | Best-in-class map data, routing accuracy, global coverage | Instructions are literal/mechanical, not conversational or landmark-rich by default |
+| **Waze** | Strong community-driven real-time data (traffic, hazards, police) | Focused on speed/traffic alerts, not natural language quality |
+| **Apple Maps** | Clean UX, tight OS integration | Similar mechanical instruction style; limited landmark usage |
+| **HERE WeGo** | Offline maps, enterprise/logistics use | Not consumer-friendly, lacks conversational tone |
+| **Voice assistants (Siri/Google Assistant nav mode)** | Voice-first interaction | Not purpose-built for continuous, context-aware navigation narration |
+
+**Differentiation:** AI Navigation doesn't try to out-map Google Maps — it uses Google Maps as the routing/data backbone and differentiates entirely on the **natural-language, human-like guidance layer** and conversational UX on top of it.
+
+---
+
+## 4. Features
+
+### Core Feature Set
+1. **Human-like turn-by-turn guidance** — AI-generated, landmark-based, conversational instructions layered on Google Maps routing data.
+2. **Voice narration (TTS)** — Natural-sounding spoken guidance, adjustable tone/pace/style.
+3. **Live map view** — Standard interactive map (Google Maps SDK) with route overlay.
+4. **Landmark & context awareness** — References visible, recognizable points (buildings, shops, signals) instead of only distances.
+5. **Trip history & saved places** — Home, work, favorites; past trips log.
+6. **Real-time traffic-aware rerouting** — Adjusts route and narration when conditions change.
+7. **Multi-modal support** — Driving, walking, (future: cycling/transit).
+8. **Authentication & profile sync** — Firebase-based sign-in, cross-device sync.
+9. **Push notifications** — Trip start reminders, arrival notices, traffic alerts.
+10. **Personalization** — Learns user's preferred phrasing/verbosity over time (future phase).
+
+---
+
+## 5. MVP (Minimum Viable Product)
+
+**Goal:** Prove that AI-generated, human-like navigation instructions are viable, accurate, and preferred over standard robotic instructions — for a single core use case (driving).
+
+### MVP Scope
+- ✅ Flutter app (iOS + Android) with Google Maps SDK map view
+- ✅ Origin → destination route search (Google Maps Directions API)
+- ✅ Backend (FastAPI) service that converts raw Google Maps steps into human-like, landmark-referenced instructions
+- ✅ Text-to-speech narration of instructions
+- ✅ Basic Firebase authentication (email + Google sign-in)
+- ✅ Trip start/end logging to PostgreSQL
+- ✅ Single navigation mode: **driving only**
+- ✅ Basic error handling (no route found, GPS loss, API failure fallback to standard instructions)
+
+### Explicitly Out of Scope for MVP
+- ❌ Walking/cycling/transit modes
+- ❌ Real-time rerouting on traffic changes
+- ❌ Personalization/learning user style
+- ❌ Offline maps/caching
+- ❌ Social/community features (hazard reporting, etc.)
+
+---
+
+## 6. Future Scope
+
+| Phase | Additions |
+|---|---|
+| **Phase 2** | Walking & cycling modes; saved places; trip history UI; richer voice customization |
+| **Phase 3** | Real-time traffic-aware rerouting with re-generated natural-language cues; offline route caching |
+| **Phase 4** | Personalization engine (learns preferred phrasing, verbosity, tone); multi-language support |
+| **Phase 5** | Public API/SDK for third-party apps to license the "human-like navigation layer"; B2B partnerships (rideshare, delivery fleets) |
+| **Phase 6** | Wearables/CarPlay/Android Auto integration; proactive contextual tips (weather, parking difficulty at destination) |
+
+---
+
+## 7. User Stories
+
+### Authentication & Onboarding
+- As a **new user**, I want to sign up with Google or email via Firebase, so I can quickly start using the app.
+- As a **returning user**, I want my trip history and saved places synced across devices, so I don't lose my data.
+
+### Core Navigation
+- As a **driver**, I want to enter a destination and get a route, so I can start navigating.
+- As a **driver**, I want instructions phrased naturally (e.g., "turn right after the bakery") instead of only distances, so I can navigate more intuitively.
+- As a **driver**, I want spoken narration of directions, so I don't need to look at my phone while driving.
+- As a **driver in an unfamiliar area**, I want landmark-based cues, so I feel more confident I'm on the right track.
+
+### Trip Management
+- As a **user**, I want to see my past trips, so I can quickly re-navigate to frequent destinations.
+- As a **user**, I want to save "Home" and "Work," so I can start navigation with one tap.
+
+### Reliability
+- As a **user**, if the AI-generated instruction service fails, I want to fall back to standard Google Maps-style instructions, so I'm never left without guidance.
+- As a **user**, I want to receive a notification when I'm close to my destination, so I can prepare to park/exit.
+
+### Accessibility
+- As a **visually impaired user**, I want detailed, descriptive audio cues, so I can navigate without relying on the screen.
+
+---
+
+## 8. Success Metrics
+
+### Product/Engagement Metrics
+- **Daily/Monthly Active Users (DAU/MAU)**
+- **Trip completion rate** (routes started vs. successfully completed without abandonment)
+- **Retention** (Day 1 / Day 7 / Day 30 retention)
+- **Session frequency** — average navigation sessions per active user per week
+
+### Quality Metrics (core differentiator)
+- **Instruction clarity rating** — post-trip user rating ("Were the directions easy to follow?")
+- **Missed-turn rate** — frequency of user deviating from route at a guided turn (proxy for instruction clarity)
+- **A/B preference score** — % of users preferring AI Navigation's phrasing vs. standard robotic instructions in comparative testing
+- **Voice narration comprehension** — % of instructions requiring the user to glance at the screen despite audio guidance
+
+### Technical Metrics
+- **API latency** — time from route request to first instruction rendered (target: < 2s)
+- **Uptime/availability** of FastAPI backend and dependency services
+- **Fallback-trigger rate** — how often the system falls back to raw Google Maps instructions due to AI-layer failure
+
+### Business Metrics (later stages)
+- **Conversion to paid tier** (if freemium model introduced)
+- **B2B licensing interest/signed pilots** (Phase 5+)
+
+---
+
+## 9. Risks
+
+| Risk | Impact | Mitigation |
+|---|---|---|
+| **AI-generated instructions are inaccurate or misleading** (wrong landmark, ambiguous phrasing) | High — safety-critical, could cause missed turns or accidents | Rigorous testing, conservative fallback to standard instructions, human review of instruction-generation prompts, real-world pilot testing before wide release |
+| **Latency in AI instruction generation** during live navigation | High — delayed instructions are dangerous while driving | Pre-generate instructions per route upfront where possible; cache common landmark data; set strict latency SLAs with fallback |
+| **Google Maps API cost at scale** | Medium — Directions/Places API usage costs scale with user growth | Monitor usage, implement caching for repeated routes, evaluate cost-tiering as usage grows |
+| **Dependency on third-party APIs** (Google Maps, Firebase) | Medium — outages or policy/pricing changes affect core functionality | Abstract via Clean Architecture repository interfaces to allow provider swaps; monitor SLAs |
+| **User trust/safety concerns with AI-generated guidance while driving** | High — regulatory and liability exposure | Clear disclaimers, conservative language generation, avoid ambiguous/creative phrasing in critical moments, extensive QA |
+| **Landmark data staleness** (e.g., "the bakery" that closed) | Medium — reduces instruction accuracy over time | Combine multiple data sources (Places API) with freshness checks; allow user reporting/correction |
+| **Privacy concerns** — location and trip history data | High — regulatory (GDPR/CCPA) and user trust risk | Clear privacy policy, data minimization, encryption at rest/in transit, user data deletion controls |
+| **Competitive response** — Google/Waze could add similar natural-language features | Medium — erodes differentiation | Move fast on personalization/voice quality as a moat; consider B2B/API licensing as a parallel strategy |
+
+---
+
+## 10. Roadmap
+
+| Timeline | Milestone |
+|---|---|
+| **Month 1–2** | Architecture setup (Clean Architecture scaffolding for Flutter + FastAPI), Google Maps & Firebase integration, core routing pipeline |
+| **Month 3** | AI instruction-generation service (landmark-based phrasing), TTS integration |
+| **Month 4** | MVP polish — auth, trip logging, error handling/fallback, internal QA |
+| **Month 5** | Closed beta (driving mode only) with real users, collect instruction-quality feedback |
+| **Month 6** | Public MVP launch (driving mode, iOS + Android) |
+| **Month 7–8** | Phase 2: walking/cycling modes, saved places, trip history UI |
+| **Month 9–10** | Phase 3: real-time traffic-aware rerouting, offline caching |
+| **Month 11–12** | Phase 4: personalization engine, multi-language support |
+| **Year 2** | Phase 5–6: public API/SDK, B2B partnerships, CarPlay/Android Auto, wearables |
+
+---
+
+## Appendix: Open Questions
+- What is the primary monetization model — freemium, subscription, or B2B licensing first?
+- Which TTS provider best balances "natural" voice quality with latency and cost?
+- What is the minimum acceptable accuracy threshold for landmark-based instructions before launch?
